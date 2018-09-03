@@ -1,0 +1,88 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script >
+  var _URL = window.URL || window.webkitURL;
+   dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+    });
+  
+  function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+  $(function(){
+  $('#imgUpload').click(function(){
+  $('#fileUpload').click()
+  });
+  $('#fileUpload').change(function(e){
+  var file, img;
+
+
+    if ((file = this.files[0])) {
+        //img = new Image();
+        //img.onload = function() {
+          //  alert("Uploaded Image Width :" + this.width + " and Uploaded Image Height :" + this.height);
+        //};
+        //img.onerror = function() {
+          //  alert( "not a valid file: " + file.type);
+        //};
+		//console.log(_URL.createObjectURL(file));
+       // img.src = _URL.createObjectURL(file);
+		 var FR= new FileReader();
+    
+    FR.addEventListener("load", function(e) {
+    //  document.getElementById("img").src       = e.target.result;
+    //  document.getElementById("b64").innerHTML = e.target.result;
+	localStorage.setItem("imgData", e.target.result);
+    }); 
+    
+    FR.readAsDataURL( this.files[0] );
+  
+		//bannerImage = img;
+	//	imgData = getBase64Image(bannerImage);
+		//localStorage.setItem("imgData", imgData);
+
+
+    }
+  });
+   $('#imgPrev').click(function(){
+  
+  
+  var dataImage = localStorage.getItem('imgData');
+bannerImg = document.getElementById('tableBanner');
+bannerImg.src = dataImage;
+  dialog.dialog( "open" );
+});
+  });
+</script>
+</head>
+<body>
+<div>
+
+<input type="file" id="fileUpload" style="Display:none" name="pic" accept="image/*">
+ <label>Please Select Image :</label> <input id="imgUpload" type="submit"  value="Upload Image">
+
+ <input id="imgPrev" type="submit"  value="Prevew Image">
+</div>
+
+<div id="dialog-form" >
+   
+ <img src="" id="tableBanner" />
+</div>
+</body>
+</html>
